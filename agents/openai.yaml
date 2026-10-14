@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bootstrap Multiplatform AI Docs"
+  short_description: "Build shared AI project docs and tool adapters"
+  default_prompt: "Use $bootstrap-multiplatform-ai-docs to initialize shared AI project conventions and tool adapters."
