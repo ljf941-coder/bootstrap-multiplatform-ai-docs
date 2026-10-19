@@ -26,6 +26,11 @@ For adapter work, read the project's `docs/ai/ADAPTER_REGISTRY.md` (or the locat
 
 For new project documentation or a substantial knowledge-map refresh, read [the bootstrap workflow](references/bootstrap-workflow.md). Skip it when a request only adds or updates one adapter.
 
+## Language
+
+- Write generated project AI documentation and tool-specific instruction files in Chinese by default, including AGENTS.md, shared standards, knowledge maps, registries, and adapter rules. Preserve filenames, code identifiers, paths, commands, and established technical terms where appropriate.
+- Follow an explicit project language preference when one exists; otherwise use Chinese for human-readable documentation in this workflow.
+
 ## Core design
 
 1. Keep cross-tool requirements in one canonical project document, normally `docs/ai/AI_DEVELOPMENT_STANDARD.md`. It owns behavioral expectations, documentation-sync requirements, verification policy, and links to project knowledge. Avoid maintaining complete competing copies in tool-specific files.
