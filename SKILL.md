@@ -73,16 +73,17 @@ Generate only documents supported by the workspace. Prefer compact tables and Me
 
 ### 4. Add requested tool adapters
 
-For every requested tool, identify its exact product and current supported instruction mechanisms. Use official, current documentation for capabilities likely to change. Do not infer behavior from a similar product name. Follow the adapter protocol and create only the adapter artifacts needed for that tool. If the same name maps to multiple products, ask a concise clarification after completing independent work.
+For every requested tool, identify its exact product and current supported instruction and hook mechanisms. Use official, current documentation for capabilities likely to change. Do not infer behavior from a similar product name. Follow the adapter protocol. If the same name maps to multiple products, ask a concise clarification after completing independent work.
 
-An adapter can be a tracked repository file, an out-of-repository project instruction snippet, a tool-specific rule file, or a combination. For instructions that users must paste or upload manually, generate a clearly named copy-ready artifact and tell the user where it belongs. Never claim a platform automatically loads a file unless that behavior is verified for the exact product.
+An adapter can be a tracked repository file, an out-of-repository project instruction snippet, a tool-specific rule file, or a combination. It should point to the shared standard, explain how to select relevant knowledge docs, and carry only tool-specific syntax or setup steps. For instructions that users must paste or upload manually, generate a clearly named copy-ready artifact and tell the user where it belongs. Never claim a platform automatically loads a file unless that behavior is verified for the exact product.
 
-### 5. Handle hooks and MCP per platform
+**Documentation-sync hooks are the default for each requested adapter when that exact tool supports project-scoped hooks.** Research its current official hook events, file format, matchers, response contract, activation/trust requirements, and execution environment, then create a project-scoped hook and companion script that connects code edits to DOC_REGISTRY.md. Do not stop at documenting that hooks are possible. Preserve and merge existing hook configuration; never overwrite it. If hooks are unsupported or cannot reliably trigger an agent follow-up/check, record that limitation and provide the strongest supported fallback (such as rules-only), clearly stating that it is not automatic. See [the hook protocol](references/adapter-protocol.md#documentation-sync-hook-requirements).
 
-Hooks, MCP server definitions, and other executable integrations are optional platform capabilities, not part of the shared standard. Configure them only when supported by the target tool and needed by the project. Do not assume `.cursor/mcp.json` is a universal MCP location or that a Cursor hook will run in another assistant.
+### 5. Handle documentation-sync hooks and MCP per platform
 
-For database-backed services, derive connection identity from the relevant project configuration when appropriate, keep credentials out of tracked files, provide a safe example/template, and state which database a tool is expected to use. Never index or describe a different database as a fallback. Obtain user authorization before connecting to or changing external systems when required by the available tools.
+For each requested adapter, apply the documentation-sync hook default in step 4. Hooks are platform-specific: create a separate project-scoped configuration/script for each supported tool, after verifying its exact current behavior. Do not assume .cursor/hooks.json, .codex/hooks.json, or one tool's event names, payloads, trust flow, or commands apply to another assistant. Do not modify user-global hook configuration.
 
+For database-backed services, derive connection identity from the relevant project configuration when appropriate, keep credentials out of tracked files, provide a safe example/template, and state which database a tool is expected to use. Never index or describe a different database as a fallback. Obtain user authorization before connecting to or changing external systems when required by the available tools. MCP remains independent from documentation-sync hooks; never create or rewrite MCP configuration as a side effect of adding a hook unless the user requests it.
 ### 6. Verify and report
 
 Check that:
@@ -103,3 +104,5 @@ After initialization, users can extend the same project by saying, for example:
 > 给这个项目增加 Cloud Code 适配器
 
 Resolve the requested product against the registry and current official docs, implement only that adapter, and add its name/aliases and behavior to `ADAPTER_REGISTRY.md`. The user should not need to explain the shared-standard architecture again. If the product name is ambiguous, ask which product they mean rather than registering a guessed identity.
+
+

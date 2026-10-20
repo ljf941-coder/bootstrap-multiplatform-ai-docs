@@ -47,8 +47,7 @@ Do not create empty or speculative maps. Include only docs supported by reposito
 
 Keep existing tool rules that still apply. Extract only genuinely shared requirements into the canonical standard, then make tool-specific entrypoints point to it. Avoid conflicting duplicate baselines. Preserve scoped domain rules and globs in the tool adapter that understands them.
 
-Document synchronization can be enforced by instructions, hooks, or both. Use hooks only where the target tool supports them and the workspace asks for or benefits from automation. A hook should remind about relevant docs based on changed paths; it should not trigger unrelated refactors. Do not assume one tool's hook format or lifecycle works in another tool.
-
+Documentation synchronization can be enforced by instructions, hooks, or both. When an adapter is requested, follow the adapter protocol: generate project-scoped doc-sync hooks by default if the exact tool supports them; otherwise use rules-only and record that synchronization is not automatically triggered. During initialization, apply this behavior to every requested adapter. A hook should remind about relevant docs based on changed paths and check for missing doc updates; it must not trigger unrelated refactors or claim semantic correctness from a file-change check alone. Do not assume one tool's hook format or lifecycle works in another tool.
 ## Database/MCP notes
 
 MCP is a tool-specific adapter, not a shared standard. For each backend-owned database, record the expected host/profile/database without exposing passwords. If the target MCP server needs project configuration:

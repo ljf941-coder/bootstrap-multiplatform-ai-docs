@@ -34,6 +34,21 @@ Use exact product/vendor identity when known. An alias is a user-facing shortcut
 6. Update the registry in the same change: canonical product name, aliases, status, entrypoint, shared source, artifacts, loading behavior, verified capabilities, limitations, activation, and verification.
 7. Verify file/link consistency and any safe local parsing. Do not perform external writes, connect to databases, or run project tests unless the user requested/authorized that action.
 
+## Documentation-sync hook requirements
+
+When adding an adapter, generate a documentation-sync hook by default if official documentation confirms that the exact tool can run project-scoped hooks and can notify or continue the active agent. Do this without asking the user to choose a hook mode; the user has requested an adapter and hook generation is part of this workflow. If the user explicitly asks for rules-only or declines executable hooks, honor that choice.
+
+The hook should make edits to registered source patterns actionable during the same agent task:
+
+1. Read DOC_REGISTRY.md and derive the source-to-document relationships from this project; do not hard-code generic guesses when the registry provides the mapping.
+2. On successful agent file edits, match relevant source paths (such as controllers, frontend API modules, entities, mapper definitions, and SQL migrations). Inject a concise reminder naming the affected documentation and asking the agent to inspect and update it based on the actual code change.
+3. At the end of the agent turn, check whether a relevant source path was edited and whether its mapped documentation was also changed. If documentation is missing, use the platform's documented follow-up/continue mechanism to return the task to the agent. Do not claim the documentation is semantically correct merely because the file changed.
+4. Avoid recursion: ignore edits to documentation files and hook/config files for the source-change trigger; cap follow-up attempts using the platform's supported limit. Do not block or loop indefinitely when the verifier fails or the required evidence is unavailable.
+5. Keep scripts project-local, narrowly scoped, and portable in the target environment. Use the project's existing runtime when possible. Do not send edited source contents, secrets, or environment variables to external services. The hook may remind and verify; the agent remains responsible for understanding and authoring accurate documentation.
+6. Preserve existing hook entries when adding configuration. If configuration syntax, hook capabilities, or supported continuation behavior cannot be established from current official documentation, do not invent a format: mark the adapter as rules-only/unavailable for automatic doc sync and state why.
+
+The adapter registry entry must list hook config and script paths, relevant events and matchers, what the hook actually guarantees (reminder, changed-file check, follow-up, or another verified behavior), activation/review steps, runtime prerequisites, and verification status. Include manual trust/reload steps where required. A generated hook is not verified until its config parses and a safe synthetic event demonstrates the expected path match and reminder/check behavior; do not run the user's project or connect external systems to validate it.
+
 ## Initialization template
 
 When initializing a project, include an adapter registry even if only one tool is configured. Example:
