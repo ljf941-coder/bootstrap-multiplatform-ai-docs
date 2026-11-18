@@ -29,9 +29,22 @@
 ```text
 owner/repo: ljf941-coder/bootstrap-multiplatform-ai-docs
 path: .
+name: bootstrap-multiplatform-ai-docs
 ```
 
-也可以在支持运行该安装脚本的本地环境执行：
+如果本地安装脚本位于默认的 `~/.codex` 目录下，可按当前 shell 选择命令。若脚本位于其他位置，请替换命令中的脚本路径并保留引号。
+
+macOS（zsh 或 Bash，需有 `python3`）：
+
+```sh
+python3 "$HOME/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
+  --repo ljf941-coder/bootstrap-multiplatform-ai-docs \
+  --path . \
+  --name bootstrap-multiplatform-ai-docs \
+  --ref master
+```
+
+Windows（PowerShell，需有 `python`）：
 
 ```powershell
 python "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" `
